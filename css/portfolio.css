@@ -5,6 +5,7 @@
 
 /* Base Styles and Variables */
 :root {
+    /* Default Theme */
     --primary-color: #2d99bd;
     --secondary-color: #49b1d4;
     --accent-color: #f9e5f4;
@@ -12,6 +13,24 @@
     --light-text: #e7e7e7;
     --dark-bg: #15202b;
     --light-bg: #f8f9fa;
+    
+    /* Blue-Purple Theme */
+    --blue-purple-primary: #6a5acd;
+    --blue-purple-secondary: #836FFF;
+    --blue-purple-accent: #e6e6fa;
+    --blue-purple-text: #333;
+    --blue-purple-light-text: #f0f0f0;
+    --blue-purple-dark-bg: #f0f0f0;
+    --blue-purple-light-bg: #f5f5ff;
+    
+    /* Blue-Purple Night Theme */
+    --blue-purple-night-primary: #9370db;
+    --blue-purple-night-secondary: #b19cd9;
+    --blue-purple-night-accent: #483d8b;
+    --blue-purple-night-text: #e0e0e0;
+    --blue-purple-night-light-text: #ffffff;
+    --blue-purple-night-dark-bg: #1a1a2e;
+    --blue-purple-night-light-bg: #16213e;
     --border-radius: 5px;
     --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
@@ -670,4 +689,111 @@ footer {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-color);
+}
+
+/* Theme Switcher */
+.theme-switcher {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.theme-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.theme-btn:hover {
+    transform: scale(1.1);
+}
+
+.theme-btn.active {
+    transform: scale(1.15);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.default-theme-btn {
+    background: linear-gradient(135deg, #2d99bd, #49b1d4);
+    color: white;
+}
+
+.blue-purple-theme-btn {
+    background: linear-gradient(135deg, #6a5acd, #836FFF);
+    color: white;
+}
+
+.blue-purple-night-theme-btn {
+    background: linear-gradient(135deg, #1a1a2e, #9370db);
+    color: white;
+}
+
+/* Blue-Purple Theme */
+body.blue-purple-theme {
+    --primary-color: var(--blue-purple-primary);
+    --secondary-color: var(--blue-purple-secondary);
+    --accent-color: var(--blue-purple-accent);
+    --text-color: var(--blue-purple-text);
+    --light-text: var(--blue-purple-light-text);
+    --dark-bg: var(--blue-purple-dark-bg);
+    --light-bg: var(--blue-purple-light-bg);
+}
+
+/* Blue-Purple Night Theme */
+body.blue-purple-night-theme {
+    --primary-color: var(--blue-purple-night-primary);
+    --secondary-color: var(--blue-purple-night-secondary);
+    --accent-color: var(--blue-purple-night-accent);
+    --text-color: var(--blue-purple-night-text);
+    --light-text: var(--blue-purple-night-light-text);
+    --dark-bg: var(--blue-purple-night-dark-bg);
+    --light-bg: var(--blue-purple-night-light-bg);
+    background-color: var(--dark-bg);
+}
+
+body.blue-purple-night-theme .about,
+body.blue-purple-night-theme .projects,
+body.blue-purple-night-theme .skills,
+body.blue-purple-night-theme .contact {
+    background-color: var(--dark-bg);
+    color: var(--text-color);
+}
+
+body.blue-purple-night-theme .project-card,
+body.blue-purple-night-theme .contact-form,
+body.blue-purple-night-theme .skill-category {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.blue-purple-night-theme header {
+    background-color: rgba(26, 26, 46, 0.95);
+}
+
+body.blue-purple-night-theme .nav-links a {
+    color: var(--text-color);
+}
+
+body.blue-purple-night-theme .form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+}
+
+body.blue-purple-night-theme .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+body.blue-purple-night-theme .hamburger .line {
+    background-color: var(--text-color);
 }

@@ -1,6 +1,6 @@
 /**
  * Portfolio JavaScript
- * Handles interactive elements and animations
+ * Handles interactive elements, animations, and theme switching
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -99,4 +99,58 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check on scroll
     window.addEventListener('scroll', checkFade);
+    
+    // Theme Switching Functionality
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    
+    // Check if there's a saved theme in localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        applyTheme(savedTheme);
+        
+        // Update active button
+        themeButtons.forEach(btn => {
+            if (btn.getAttribute('data-theme') === savedTheme) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+    
+    // Add click event to theme buttons
+    themeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const theme = this.getAttribute('data-theme');
+            
+            // Remove active class from all buttons
+            themeButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Apply the selected theme
+            applyTheme(theme);
+            
+            // Save theme preference to localStorage
+            localStorage.setItem('theme', theme);
+        });
+    });
+    
+    /**
+     * Apply the selected theme to the body element
+     * @param {string} theme - The theme to apply ('default', 'blue-purple', or 'blue-purple-night')
+     */
+    function applyTheme(theme) {
+        // Remove all theme classes
+        document.body.classList.remove('blue-purple-theme', 'blue-purple-night-theme');
+        
+        // Apply the selected theme
+        if (theme === 'blue-purple') {
+            document.body.classList.add('blue-purple-theme');
+        } else if (theme === 'blue-purple-night') {
+            document.body.classList.add('blue-purple-night-theme');
+        }
+        // Default theme doesn't need a class as it's the base styling
+    }
 });
