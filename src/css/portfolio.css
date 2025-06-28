@@ -178,6 +178,12 @@ nav {
     color: var(--primary-color);
 }
 
+.logo img {
+    max-height: 40px;
+    width: auto;
+    vertical-align: middle;
+}
+
 .nav-links {
     display: flex;
     list-style: none;

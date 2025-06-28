@@ -1,0 +1,20 @@
+{
+  "name": "harry-portfolio",
+  "version": "1.0.0",
+  "description": "Harry Ji's Personal Portfolio Website",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "portfolio",
+    "personal-website"
+  ],
+  "author": "Harry Ji",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
