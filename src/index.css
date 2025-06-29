@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import existing styles if needed */
+/* @import './css/portfolio.css'; */
+
+/* Custom styles that can't be achieved with Tailwind alone */
+@layer components {
+  /* You can define custom component classes here */
+}
+
+@layer utilities {
+  /* You can define custom utility classes here */
+}
