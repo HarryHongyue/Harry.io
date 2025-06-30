@@ -1,49 +1,119 @@
 import React from 'react';
 
 /**
- * Footer component for the website
- * Contains copyright information, social links, and contact info
+ * Professional Footer component inspired by tech industry leaders
+ * Horizontal layout with clean sections and modern design
  */
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-gray-900 text-white py-16">
-      <div className="w-[90%] max-w-[1200px] mx-auto px-5">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {/* First footer column */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-blue-400 mb-4">Harry Ji</h3>
-            <p className="text-gray-300 leading-relaxed">Software Developer & Tech Enthusiast based in San Francisco, CA. Passionate about creating innovative solutions and sharing knowledge.</p>
+    <footer>
+      <div className="container">
+        <div className="footer-content">
+          {/* Company/Brand Section */}
+          <div className="footer-column">
+            <div className="logo">
+              <img src="/src/img/个人网站的logo.png" alt="Harry Ji" style={{height: '32px', width: 'auto'}} />
+              <span style={{fontSize: '1.5rem', marginLeft: '8px'}}>Harry Ji</span>
+            </div>
+            <p style={{marginTop: '15px', lineHeight: '1.6', color: '#aaa'}}>
+              Building the future with code.<br />
+              Full-stack developer creating innovative<br />
+              digital experiences and solutions.
+            </p>
+            <div className="social-links">
+              <a href="https://github.com/harryji" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <i className="fab fa-github"></i>
+              </a>
+              <a href="https://linkedin.com/in/harryji" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <i className="fab fa-linkedin"></i>
+              </a>
+              <a href="https://twitter.com/harryji" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                <i className="fab fa-twitter"></i>
+              </a>
+              <a href="mailto:contact@harryji.dev" aria-label="Email">
+                <i className="fas fa-envelope"></i>
+              </a>
+            </div>
           </div>
           
-          {/* Second footer column - Quick Links */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-blue-400 mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li><a href="#home" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">Home</a></li>
-              <li><a href="#about" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">About</a></li>
-              <li><a href="#projects" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">Projects</a></li>
-              <li><a href="#skills" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">Skills</a></li>
-              <li><a href="#contact" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">Contact</a></li>
+          {/* Navigation Links */}
+          <div className="footer-column">
+            <h3>Navigation</h3>
+            <ul className="footer-links">
+              <li><a href="#home">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#projects">Projects</a></li>
+              <li><a href="#skills">Skills</a></li>
+              <li><a href="#contact">Contact</a></li>
             </ul>
           </div>
           
-          {/* Third footer column - Connect */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-blue-400 mb-4">Connect</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">GitHub</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">LinkedIn</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">Twitter</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">Instagram</a></li>
+          {/* Services/Technologies */}
+          <div className="footer-column">
+            <h3>Technologies</h3>
+            <ul className="footer-links">
+              <li><a href="#react">React Development</a></li>
+              <li><a href="#nodejs">Node.js Backend</a></li>
+              <li><a href="#mobile">Mobile Apps</a></li>
+              <li><a href="#cloud">Cloud Solutions</a></li>
+              <li><a href="#consulting">Tech Consulting</a></li>
             </ul>
+          </div>
+          
+          {/* Resources */}
+          <div className="footer-column">
+            <h3>Resources</h3>
+            <ul className="footer-links">
+              <li><a href="/blog">Blog</a></li>
+              <li><a href="/portfolio">Portfolio</a></li>
+              <li><a href="/resume">Resume</a></li>
+              <li><a href="/case-studies">Case Studies</a></li>
+              <li><a href="/testimonials">Testimonials</a></li>
+            </ul>
+          </div>
+          
+          {/* Contact & Legal */}
+          <div className="footer-column">
+            <h3>Connect</h3>
+            <ul className="footer-links">
+              <li>
+                <i className="fas fa-map-marker-alt" style={{marginRight: '8px', color: 'var(--primary-color)'}}></i>
+                Amsterdam, NL
+              </li>
+              <li>
+                <i className="fas fa-envelope" style={{marginRight: '8px', color: 'var(--primary-color)'}}></i>
+                <a href="mailto:contact@harryji.dev">contact@harryji.dev</a>
+              </li>
+              <li>
+                <i className="fas fa-phone" style={{marginRight: '8px', color: 'var(--primary-color)'}}></i>
+                <a href="tel:+31612345678">+31 6 1234 5678</a>
+              </li>
+            </ul>
+            <div style={{marginTop: '20px'}}>
+              <ul className="footer-links" style={{fontSize: '0.85rem'}}>
+                <li><a href="/privacy">Privacy Policy</a></li>
+                <li><a href="/terms">Terms of Service</a></li>
+              </ul>
+            </div>
           </div>
         </div>
         
-        {/* Footer bottom with copyright */}
-        <div className="border-t border-gray-700 mt-10 pt-6 text-center">
-          <p className="text-gray-400">&copy; {currentYear} Harry Ji. All Rights Reserved.</p>
+        {/* Footer Bottom Bar */}
+        <div className="footer-bottom">
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px'}}>
+            <p>&copy; {currentYear} Harry Ji. All rights reserved.</p>
+            <div style={{display: 'flex', alignItems: 'center', gap: '20px', fontSize: '0.9rem'}}>
+              <span style={{color: '#aaa'}}>Made with ❤️ in Amsterdam</span>
+              <div style={{display: 'flex', gap: '15px'}}>
+                <a href="/sitemap" style={{color: '#aaa', fontSize: '0.85rem'}}>Sitemap</a>
+                <a href="/rss" style={{color: '#aaa', fontSize: '0.85rem'}}>RSS</a>
+                <span style={{color: '#555'}}>|</span>
+                <span style={{color: '#aaa', fontSize: '0.85rem'}}>Status: All systems operational</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,134 +1,270 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 /**
- * Header component containing the navigation bar and language switcher
+ * Header component with proper layout:
+ * Left: Logo + Site Name
+ * Right: Navigation Menu + Language Switcher
  */
 const Header: React.FC = () => {
-  const [scrolled, setScrolled] = useState<boolean>(false);
-  const [mobileMenuActive, setMobileMenuActive] = useState<boolean>(false);
-  const [languageDropdownActive, setLanguageDropdownActive] = useState<boolean>(false);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState<boolean>(false);
   const [currentLanguage, setCurrentLanguage] = useState<string>('EN');
 
-  // Handle scroll effect
+  // Handle scroll effect for header
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
     
-    // Check if there's a saved language in localStorage
-    const savedLanguage = localStorage.getItem('language') || 'en';
-    setCurrentLanguage(savedLanguage.toUpperCase());
+    // Load saved language - 不使用localStorage，改用内存存储
+    setCurrentLanguage('EN');
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  // Toggle mobile menu
-  const toggleMobileMenu = () => {
-    setMobileMenuActive(!mobileMenuActive);
-  };
-
-  // Toggle language dropdown
-  const toggleLanguageDropdown = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setLanguageDropdownActive(!languageDropdownActive);
-  };
-
-  // Handle language change
-  const handleLanguageChange = (lang: string) => {
-    setCurrentLanguage(lang.toUpperCase());
-    localStorage.setItem('language', lang.toLowerCase());
-    setLanguageDropdownActive(false);
-    
-    // In a real implementation, this would trigger language change throughout the app
-    console.log(`Language changed to: ${lang}`);
-  };
-
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = () => {
-      setLanguageDropdownActive(false);
+      setIsLanguageDropdownOpen(false);
     };
 
     document.addEventListener('click', handleClickOutside);
-    
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
 
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Toggle language dropdown
+  const toggleLanguageDropdown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
+  };
+
+  // Handle language change
+  const handleLanguageChange = (lang: string) => {
+    setCurrentLanguage(lang.toUpperCase());
+    setIsLanguageDropdownOpen(false);
+    setIsMobileMenuOpen(false); // Close mobile menu if open
+    
+    // Trigger language change event
+    window.dispatchEvent(new CustomEvent('languageChange', { detail: lang }));
+  };
+
+  // Handle navigation click
+  const handleNavClick = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <header className={`fixed top-0 left-0 w-full bg-white bg-opacity-100 shadow-md z-10 transition-all duration-300 ${scrolled ? 'py-2' : 'py-5'}`}>
-      <div className="w-[90%] max-w-[1200px] mx-auto px-5 flex justify-end items-center">
-        <div className="mr-auto">
-          <a href="#hero" className="text-2xl font-bold text-blue-500">
-            <img src="img/logo.png" alt="Harry Ji" className="max-h-10 w-auto align-middle" />
-          </a>
+    <>
+      {/* 内联样式来确保覆盖所有可能的样式冲突 */}
+      <style>{`
+        /* 确保导航链接没有边框 */
+        .nav-links a,
+        .nav-links a:hover,
+        .nav-links a:focus,
+        .nav-links a:active,
+        .nav-links a:visited {
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+          text-decoration: none !important;
+        }
+
+        /* 移除所有可能的默认边框和轮廓 */
+        *:focus {
+          outline: none !important;
+        }
+
+        a:focus,
+        button:focus,
+        input:focus,
+        textarea:focus,
+        select:focus {
+          outline: none !important;
+          box-shadow: 0 0 0 2px var(--primary-color) !important;
+        }
+
+        /* 语言切换按钮样式修复 */
+        .language-btn {
+          background-color: transparent !important;
+          border: 1px solid var(--primary-color) !important;
+          color: var(--primary-color) !important;
+        }
+
+        .language-btn:hover {
+          background-color: var(--primary-color) !important;
+          color: var(--button-text) !important;
+        }
+
+        /* 语言下拉菜单修复 */
+        .language-dropdown {
+          background-color: var(--card-bg) !important;
+          border: 1px solid var(--border-color) !important;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .language-dropdown li {
+          color: var(--body-text) !important;
+          background-color: transparent;
+        }
+
+        .language-dropdown li:hover {
+          background-color: var(--bg-tertiary) !important;
+          color: var(--primary-color) !important;
+        }
+
+        .language-dropdown li.active {
+          color: var(--primary-color) !important;
+          background-color: var(--bg-tertiary) !important;
+        }
+
+        /* 语言切换器容器修复 */
+        .language-switcher {
+          position: relative;
+        }
+
+        .language-hover-wrapper .hover-dropdown {
+          background-color: var(--card-bg) !important;
+          border: 1px solid var(--border-color) !important;
+        }
+
+        /* 移动端汉堡菜单 */
+        .hamburger .line {
+          background-color: var(--text-color) !important;
+        }
+
+        /* 移动端导航 */
+        .nav-links {
+          background-color: var(--header-bg) !important;
+          border: 1px solid var(--border-color);
+        }
+
+        /* 确保Logo颜色正确应用 */
+        .logo-link span {
+          color: var(--primary-color) !important;
+        }
+
+        /* 确保导航链接颜色正确应用 */
+        .nav-links a {
+          color: var(--text-color) !important;
+        }
+
+        .nav-links a:hover {
+          color: var(--primary-color) !important;
+        }
+
+        .nav-links a.active {
+          color: var(--primary-color) !important;
+        }
+
+        /* 确保导航链接下划线使用主题色 */
+        .nav-links a::after {
+          background-color: var(--primary-color) !important;
+        }
+      `}</style>
+
+      <header className={`${isScrolled ? 'scrolled' : ''}`}>
+        <div className="container">
+          <nav>
+            {/* Left side: Logo + Site Name */}
+            <div className="logo">
+              <a href="#home" className="logo-link">
+                <img src="/src/img/个人网站的logo.png" alt="Harry Ji Logo" style={{ height: '40px', width: 'auto' }} />
+                <span>Harry Ji</span>
+              </a>
+            </div>
+
+            {/* Right side: Navigation Menu (Desktop) */}
+            <ul className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`}>
+              <li><a href="#home" className="active nav-link-no-border" onClick={handleNavClick} style={{border: 'none', outline: 'none', boxShadow: 'none', background: 'transparent'}}>Home</a></li>
+              <li><a href="#about" className="nav-link-no-border" onClick={handleNavClick} style={{border: 'none', outline: 'none', boxShadow: 'none', background: 'transparent'}}>About</a></li>
+              <li><a href="#projects" className="nav-link-no-border" onClick={handleNavClick} style={{border: 'none', outline: 'none', boxShadow: 'none', background: 'transparent'}}>Projects</a></li>
+              <li><a href="#skills" className="nav-link-no-border" onClick={handleNavClick} style={{border: 'none', outline: 'none', boxShadow: 'none', background: 'transparent'}}>Skills</a></li>
+              <li><a href="#contact" className="nav-link-no-border" onClick={handleNavClick} style={{border: 'none', outline: 'none', boxShadow: 'none', background: 'transparent'}}>Contact</a></li>
+              
+              {/* Language Switcher (Mobile - inside menu) */}
+              <li className="language-switcher-mobile">
+                <div className="language-switcher">
+                  <button 
+                    className="language-btn"
+                    onClick={toggleLanguageDropdown}
+                  >
+                    {currentLanguage} <i className="fas fa-globe"></i>
+                  </button>
+                  <ul className={`language-dropdown ${isLanguageDropdownOpen ? 'active' : ''}`}>
+                    <li 
+                      className={currentLanguage === 'EN' ? 'active' : ''}
+                      onClick={() => handleLanguageChange('en')}
+                    >
+                      English
+                    </li>
+                    <li 
+                      className={currentLanguage === 'ZH' ? 'active' : ''}
+                      onClick={() => handleLanguageChange('zh')}
+                    >
+                      中文
+                    </li>
+                    <li 
+                      className={currentLanguage === 'NL' ? 'active' : ''}
+                      onClick={() => handleLanguageChange('nl')}
+                    >
+                      Nederlands
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+
+            {/* Language Switcher (Desktop) - hover effect */}
+            <div className="language-switcher desktop-only">
+              <div className="language-hover-wrapper">
+                <button className="language-btn">
+                  {currentLanguage} <i className="fas fa-globe"></i>
+                </button>
+                <ul className="language-dropdown hover-dropdown">
+                  <li 
+                    className={currentLanguage === 'EN' ? 'active' : ''}
+                    onClick={() => handleLanguageChange('en')}
+                  >
+                    English
+                  </li>
+                  <li 
+                    className={currentLanguage === 'ZH' ? 'active' : ''}
+                    onClick={() => handleLanguageChange('zh')}
+                  >
+                    中文
+                  </li>
+                  <li 
+                    className={currentLanguage === 'NL' ? 'active' : ''}
+                    onClick={() => handleLanguageChange('nl')}
+                  >
+                    Nederlands
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Mobile Hamburger Menu */}
+            <div className="hamburger" onClick={toggleMobileMenu}>
+              <div className="line"></div>
+              <div className="line"></div>
+              <div className="line"></div>
+            </div>
+          </nav>
         </div>
-        
-        <div className={`md:hidden cursor-pointer ${mobileMenuActive ? 'active' : ''}`} onClick={toggleMobileMenu}>
-          <span className="block w-6 h-0.5 bg-gray-800 my-1.5 transition-all"></span>
-          <span className="block w-6 h-0.5 bg-gray-800 my-1.5 transition-all"></span>
-          <span className="block w-6 h-0.5 bg-gray-800 my-1.5 transition-all"></span>
-        </div>
-        
-        <nav className={`flex justify-between items-center py-5 ${mobileMenuActive ? 'block' : 'hidden md:flex'}`}>
-          <ul className="flex flex-col md:flex-row md:items-center">
-            <li className="md:ml-8"><a href="#hero" onClick={() => setMobileMenuActive(false)} className="text-gray-800 font-semibold hover:text-blue-500 relative after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full">Home</a></li>
-            <li className="md:ml-8"><a href="#about" onClick={() => setMobileMenuActive(false)} className="text-gray-800 font-semibold hover:text-blue-500 relative after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full">About</a></li>
-            <li className="md:ml-8 relative group">
-              <a href="#projects" className="text-gray-800 font-semibold hover:text-blue-500 relative after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full flex items-center gap-1">Projects</a>
-              <ul className="absolute top-full left-0 bg-white min-w-[180px] shadow-md rounded-md py-2.5 opacity-0 invisible transform translate-y-2.5 transition-all group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 z-20">
-                <li><a href="#project1" className="block px-5 py-2 text-gray-800 hover:bg-gray-100 hover:text-blue-500">Project 1</a></li>
-                <li><a href="#project2" className="block px-5 py-2 text-gray-800 hover:bg-gray-100 hover:text-blue-500">Project 2</a></li>
-                <li><a href="#project3" className="block px-5 py-2 text-gray-800 hover:bg-gray-100 hover:text-blue-500">Project 3</a></li>
-              </ul>
-            </li>
-            <li className="md:ml-8"><a href="#skills" onClick={() => setMobileMenuActive(false)} className="text-gray-800 font-semibold hover:text-blue-500 relative after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full">Skills</a></li>
-            <li className="md:ml-8"><a href="#contact" onClick={() => setMobileMenuActive(false)} className="text-gray-800 font-semibold hover:text-blue-500 relative after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full">Contact</a></li>
-            
-            <li className={`md:ml-5 relative ${languageDropdownActive ? 'active' : ''}`}>
-              <button 
-                className="flex items-center gap-1.5 bg-transparent border border-blue-500 text-blue-500 px-4 py-2 rounded-full font-semibold transition-all hover:bg-blue-500 hover:text-white" 
-                onClick={toggleLanguageDropdown}
-              >
-                {currentLanguage} <i className="fas fa-globe"></i>
-              </button>
-              <ul className="absolute top-full right-0 bg-white min-w-[150px] shadow-md rounded-md py-2.5 mt-2.5 opacity-0 invisible transform translate-y-2.5 transition-all z-20 list-none ${languageDropdownActive ? 'opacity-100 visible translate-y-0' : ''}">
-                <li 
-                  data-lang="en" 
-                  className={`px-5 py-2 cursor-pointer transition-all hover:bg-gray-100 hover:text-blue-500 ${currentLanguage === 'EN' ? 'text-blue-500 font-semibold' : ''}`}
-                  onClick={() => handleLanguageChange('en')}
-                >
-                  English
-                </li>
-                <li 
-                  data-lang="zh" 
-                  className={`px-5 py-2 cursor-pointer transition-all hover:bg-gray-100 hover:text-blue-500 ${currentLanguage === 'ZH' ? 'text-blue-500 font-semibold' : ''}`}
-                  onClick={() => handleLanguageChange('zh')}
-                >
-                  中文
-                </li>
-                <li 
-                  data-lang="nl" 
-                  className={`px-5 py-2 cursor-pointer transition-all hover:bg-gray-100 hover:text-blue-500 ${currentLanguage === 'NL' ? 'text-blue-500 font-semibold' : ''}`}
-                  onClick={() => handleLanguageChange('nl')}
-                >
-                  Nederlands
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+      </header>
+    </>
   );
 };
 
