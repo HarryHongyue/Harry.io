@@ -1,6 +1,7 @@
 {
   "name": "harry-portfolio",
   "version": "1.0.0",
+  "type": "module",
   "description": "Harry Ji's Personal Portfolio Website",
   "scripts": {
     "dev": "vite",
